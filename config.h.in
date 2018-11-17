@@ -1,0 +1,12 @@
+#define DistPipelineFWK_VERSION_MAJOR @DistPipelineFWK_VERSION_MAJOR@
+#define DistPipelineFWK_VERSION_MINOR @DistPipelineFWK_VERSION_MINOR@
+
+#cmakedefine OpenCL_FOUND 1
+
+#cmakedefine CLBLAS_FOUND 1
+
+#cmakedefine CUDA_FOUND 1
+
+#cmakedefine HAVE_CUBLAS_V2_H 1
+
+
