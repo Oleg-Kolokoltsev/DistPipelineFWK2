@@ -1,0 +1,7 @@
+add_executable (demo_arduino_host "main.cpp")
+target_link_libraries(demo_arduino_host ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(demo_arduino_host ${Boost_LIBRARIES})
+target_link_libraries(demo_arduino_host ${Boost_FILESYSTEM_LIBRARY})
+target_link_libraries(demo_arduino_host ${Boost_SYSTEM_LIBRARY})
+target_link_libraries(demo_arduino_host ${Boost_THREAD_LIBRARY})
+set_property(TARGET demo_arduino_host PROPERTY CXX_STANDARD 11)

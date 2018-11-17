@@ -6,7 +6,7 @@ set (DistPipelineFWK_VERSION_MAJOR 1)
 set (DistPipelineFWK_VERSION_MINOR 0)
 
 # setup path to the custom CMake modules and scripts
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/modules/")
 
 # check main packages and fill up variables for configure.h
 include(PlatformIntrospection)
