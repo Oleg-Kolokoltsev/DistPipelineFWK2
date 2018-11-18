@@ -2,13 +2,7 @@
 // Created by morrigan on 11/17/18.
 //
 
-/*
-  Blink
-  Turns on an LED on for one second, then off for one second, repeatedly.
-  Example uses a static library to show off generate_arduino_library().
 
-  This example code is in the public domain.
- */
 #if ARDUINO >= 100
 #include "Arduino.h"
 #else
