@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <deque>
+#include <cstring>
 
 #include "serial_port_src.hpp"
 #include "base_filter.hpp"
@@ -16,7 +17,13 @@ using namespace std;
 
 using tSource = SerialPortSRC<BaseMessage, 1024>;
 
-
+/*
+ * This class receives the data sent from ../board/main.cpp
+ *
+ * The data format is:
+ * ...BEGIN[...,uint16_t,...]END...
+ *
+ */
 class Receiver : public BaseFilter<SerialOutPkt, RealSignalPkt>{
     using tBase = BaseFilter<SerialOutPkt, RealSignalPkt>;
     using tBuf = std::vector<unsigned char>;
@@ -29,22 +36,22 @@ protected:
 
         const auto& blk = msg->block;
 
-        part_data.insert(part_data.end(), blk.begin(), blk.begin() + blk.size());
+        byte_queue.insert(byte_queue.end(), blk.begin(), blk.begin() + blk.size());
 
-        // find first occurrance of the header/footer delimiters
-        auto head_it = search(part_data.begin(), part_data.end(), DATA_HEAD.begin(), DATA_HEAD.end());
-        auto foot_it = search(part_data.begin(), part_data.end(), DATA_FOOT.begin(), DATA_FOOT.end());
+        // try to find header/footer delimiters
+        auto head_it = search(byte_queue.begin(), byte_queue.end(), DATA_HEAD.begin(), DATA_HEAD.end());
+        auto foot_it = search(byte_queue.begin(), byte_queue.end(), DATA_FOOT.begin(), DATA_FOOT.end());
 
         // wait until both header and footer are present
-        if(head_it == part_data.end() || foot_it == part_data.end()) {
+        if(head_it == byte_queue.end() || foot_it == byte_queue.end()) {
             return nullptr;
-        }else if(part_data.size() > 1e6){
+        }else if(byte_queue.size() > 1e6){
             throw runtime_error("1 Mb of data received without delimiters, check the board code");
         }
 
-        // footer thet comes before header represent truncated old data
+        // footer that comes before header represent truncated old data
         if(distance(head_it + DATA_HEAD.size(), foot_it) < 0) {
-            part_data.erase(part_data.begin(), foot_it + DATA_FOOT.size());
+            byte_queue.erase(byte_queue.begin(), foot_it + DATA_FOOT.size());
             return nullptr;
         }
 
@@ -58,23 +65,23 @@ protected:
         if(bytes == 0)
             return nullptr;
 
-        // get the data
-        tBuf plain_data;
-        vector<int16_t> data(bytes/2);
-        plain_data.insert(plain_data.begin(), head_it + DATA_HEAD.size(), foot_it);
-        memcpy(data.data(), plain_data.data(), plain_data.size());
-
-        // erase already received block from the input queue
-        part_data.erase(part_data.begin(), foot_it + DATA_FOOT.size());
-
         // create the output message
         tBase::tPtrOut p_msg(new tBase::tPtrOut::element_type);
         p_msg->data.resize(bytes/2);
 
-        // int16_t -> double
-        for(int i = 0; i < data.size(); i++)
-            p_msg->data[i] = data[i];
+        // get the data
+        int i = 0; char lh[2]; int16_t v;
+        for(auto it = head_it + DATA_HEAD.size(); it != foot_it;){
+            // char -> int16_t
+            lh[0] = *it; it++;
+            lh[1] = *it; it++;
+            memcpy(&v, lh, 2);
+            // int16_t -> double
+            p_msg->data[i++] = v;
+        }
 
+        // erase already received block from the input queue
+        byte_queue.erase(byte_queue.begin(), foot_it + DATA_FOOT.size());
 
         return p_msg;
     }
@@ -82,7 +89,7 @@ protected:
 private:
     const tBuf DATA_HEAD = {'B','E','G','I','N'};
     const tBuf DATA_FOOT = {'E','N','D'};
-    std::deque<tBuf::value_type> part_data;
+    std::deque<tBuf::value_type> byte_queue;
 };
 
 
