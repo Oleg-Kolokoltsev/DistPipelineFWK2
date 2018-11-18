@@ -15,21 +15,26 @@
 #include "WProgram.h"
 #endif
 
-void blink(unsigned long duration, uint8_t pin=13){
-    digitalWrite(pin, HIGH);   // set the LED on
-    delay(duration);           // wait for a second
-    digitalWrite(pin, LOW);    // set the LED off
-    delay(duration);           // wait for a second
-}
+// 800 is nearly the largest array size that is supported on arduino uno
+const int16_t N = 800;
+
+int16_t val[N];
+int16_t idx;
 
 void setup() {
-    pinMode(13, OUTPUT);
+    // this is the largest speed supported
+    Serial.begin(9600);
+    idx = 0;
 }
 
 void loop() {
-    digitalWrite(13, HIGH);
-    delay(200);
-    digitalWrite(13, LOW);
-    delay(200);
+    if(idx < N){
+        val[idx] = analogRead(A0);
+        idx++;
+    }else{
+        Serial.print("BEGIN");
+        Serial.write((byte*)val, N*sizeof(int16_t));
+        Serial.print("END");
+        idx = 0;
+    }
 }
-

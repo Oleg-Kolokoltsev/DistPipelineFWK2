@@ -137,6 +137,7 @@ PlotScope::handle_read_stdout(const tErrCode& ec, std::size_t bytes_transferred,
         auto& part_png = ps->part_png;
 
         auto prev_sz = part_png.size();
+        //todo: looks like this is an error, you can't insert all into the part_png, there can be non-data messages
         part_png.insert(part_png.end(), ps->out_buf.begin(), ps->out_buf.begin() + bytes_transferred);
 
         auto roll = prev_sz > 8 ? 7 : prev_sz;
