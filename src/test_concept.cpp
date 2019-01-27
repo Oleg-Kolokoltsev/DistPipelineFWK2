@@ -4,8 +4,6 @@
 // https://static.bhphotovideo.com/lit_files/84742.pdf
 //
 
-
-
 #include <iostream>
 #include <cstdlib>
 #include <memory>
