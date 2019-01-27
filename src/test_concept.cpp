@@ -1,5 +1,5 @@
 //
-// Created by morrigan on 9/26/18.
+// https://www.music.mcgill.ca/~gary/rtmidi/
 //
 
 #include <iostream>
