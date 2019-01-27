@@ -14,7 +14,6 @@ include_directories(${LibSources_SOURCE_DIR})
 
 add_subdirectory(executables)
 
-
 add_executable (test_concept test_concept.cpp)
 target_link_libraries(test_concept ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(test_concept ${Boost_LIBRARIES})
@@ -23,6 +22,7 @@ target_link_libraries(test_concept ${Boost_SYSTEM_LIBRARY})
 target_link_libraries(test_concept ${Boost_THREAD_LIBRARY})
 target_link_libraries(test_concept ${ALLEGRO_LIBRARIES})
 target_link_libraries(test_concept ${GSL_LIBRARIES})
+target_link_libraries(test_concept ${RTMIDI_LIBRARIES})
 target_link_libraries(test_concept lib_dsp lib_graphics)
 set_property(TARGET test_concept PROPERTY CXX_STANDARD 11)
 

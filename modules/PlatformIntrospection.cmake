@@ -47,6 +47,9 @@ find_package(Boost COMPONENTS system filesystem thread REQUIRED)
 #message(STATUS NETCDF_LIBRARIES_CXX: ${NETCDF_LIBRARIES_CXX})
 #message(STATUS NETCDF_LIBRARIES: ${NETCDF_LIBRARIES_CXX})
 
+find_package(RtMidi)
+include_directories(${RTMIDI_INCLUDE_DIRS})
+
 
 
 
