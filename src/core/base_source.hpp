@@ -36,7 +36,7 @@ protected:
             pol(pol) {}
 
     virtual bool process_usr_msg(tPtrIn&& msg){
-        if(next){
+        if(next && func_acquire){
             if(msg->cmd == MSG_CMD::ACQUIRE) {
                 tPtrOut out_msg = func_acquire();
                 out_msg->sent_from = this->uid;

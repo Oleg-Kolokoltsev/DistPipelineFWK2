@@ -1,7 +1,7 @@
 
 
 add_executable (ex_01_core "01_core.cpp")
-  target_link_libraries(ex_01_core ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(ex_01_core ${CMAKE_THREAD_LIBS_INIT})
 set_property(TARGET ex_01_core PROPERTY CXX_STANDARD 11)
 
 add_executable (ex_02_splitjoin "02_splitjoin.cpp")
@@ -66,6 +66,11 @@ target_link_libraries(ex_08_nft ${ALLEGRO_LIBRARIES})
 target_link_libraries(ex_08_nft ${GSL_LIBRARIES})
 target_link_libraries(ex_08_nft lib_graphics)
 set_property(TARGET ex_08_nft PROPERTY CXX_STANDARD 11)
+
+add_executable (ex_09_midi "09_midi.cpp")
+target_link_libraries(ex_09_midi ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(ex_09_midi ${RTMIDI_LIBRARIES})
+set_property(TARGET ex_09_midi PROPERTY CXX_STANDARD 11)
 
 add_executable (ex_00_staticplot "00_staticplot.cpp")
 set_property(TARGET ex_00_staticplot PROPERTY CXX_STANDARD 11)
