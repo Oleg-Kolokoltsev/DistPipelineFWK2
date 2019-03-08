@@ -3,8 +3,8 @@
 //
 
 /*
- * This example show how to capture generic MIDI source packets.
- * The MIDI deice can be selected by port number that is passed to the tSource constructor
+ * This example shows how to capture generic MIDI source packets.
+ * MIDI device can be selected by port number that is passed to the tSource constructor
  * from the list that is printed each time application will run.
  *
  * In MIDI protocol each packet is a byte sequence. Ths sequence is device dependent,
@@ -15,25 +15,36 @@
  * When this application is running, just touch your MIDI controls and see the output.
  */
 
+//TODO: Set RtMidi error callbacks
+
 #include "midi_port_src.hpp"
 
 using namespace std;
 
 // the source produce a raw MidiOutPkt each time it decets a midi event on the selected port
-using tSource = MidiPortSRC<MidiOutPkt>;
+using tSource = MidiPortSRC;
 
 // simple device node
 using tDevice = BaseNode<MidiOutPkt>;
 
 // the device node just prints MidiOutPkt to console
 bool dev_proc(shared_ptr<MidiOutPkt>&& msg){
-    cout << "GOT MIDI PACKET" << endl;
+
+    auto& bytes = msg->bytes;
+    auto nBytes = bytes.size();
+
+    for ( unsigned int i = 0; i < nBytes; i++ )
+        std::cout << "Byte " << i << " = " << (int)bytes.at(i) << ", ";
+    if ( nBytes > 0 )
+        std::cout << "dt = " << msg->deltatime << std::endl;
+
     return true;
 }
 
 int main(int argc, char** argv){
 
-    // create and start all nodes
+    // usually new MIDI device will be attachet on the port "1"
+    // check output to see all devices
     auto src =    NodeFactory::create<tSource>(1);
     auto dev =    NodeFactory::create<tDevice>(dev_proc, "SimpleConsoleDevice");
 

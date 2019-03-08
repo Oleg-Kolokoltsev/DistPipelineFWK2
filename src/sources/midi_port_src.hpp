@@ -28,17 +28,18 @@ struct MidiOutPkt : public BaseMessage{
 
     // Also, you can inherit this class to incapsulate device dependent mappings and
     // generate meaningful output packets.
-    std::vector<int> bytes;
+    std::vector<unsigned char> bytes;
+
+    double deltatime;
 };
 
-template<typename tOut = MidiOutPkt>
-class MidiPortSRC : public BaseSource<tOut>{
+class MidiPortSRC : public BaseSource<MidiOutPkt>{
 
 protected:
     using tPtrRtMidiIn = std::shared_ptr<RtMidiIn>;
 
 public:
-    using tBase = BaseSource<tOut>;
+    using tBase = BaseSource<MidiOutPkt>;
     using tPtrOut = typename tBase::tPtrOut;
 
     MidiPortSRC(int nPort = -1) :
@@ -59,7 +60,7 @@ public:
             // Set callback function.  This should be done immediately after
             // opening the port to avoid having incoming messages written to the
             // queue.
-            midiin->setCallback(&MidiPortSRC<tOut>::on_midi_event, this);
+            midiin->setCallback(&MidiPortSRC::on_midi_event, this);
 
             // Don't ignore sysex, timing, or active sensing messages.
             midiin->ignoreTypes(false, false, false);
@@ -84,14 +85,21 @@ public:
     }
 
 private:
-    static void on_midi_event(double deltatime, std::vector< unsigned char > *message, void *userData){
-        unsigned int nBytes = message->size();
+    static void on_midi_event(double deltatime, std::vector< unsigned char > *message, void *thisClassObj){
 
-        for ( unsigned int i = 0; i < nBytes; i++ )
-            std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
-        if ( nBytes > 0 )
-            std::cout << "stamp = " << deltatime << std::endl;
-        //TODO: send outputacket
+        // send tOut message
+        auto srcObj = static_cast<MidiPortSRC*>(thisClassObj);
+
+        if(srcObj->next){
+            auto out_msg = tPtrOut(new MidiOutPkt);
+
+            out_msg->sent_from = srcObj->uid;
+            out_msg->bytes = std::move(*message);
+            out_msg->deltatime = deltatime;
+
+            srcObj->next->put(move(out_msg), srcObj->uid, srcObj->pol);
+        }
+
     }
 
 protected:
