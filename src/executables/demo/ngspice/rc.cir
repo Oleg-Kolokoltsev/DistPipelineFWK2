@@ -7,6 +7,6 @@ r1 1 2 680ohm
 c1 2 0 1u
 
 .TRAN 0.5us 2ms 0
-.save V(2)
+.save V(2) @r1[i]
 
 .end
