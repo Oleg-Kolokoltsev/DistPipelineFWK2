@@ -16,6 +16,8 @@ find_package(NgSpice REQUIRED)
 message(STATUS "NGSPICE_INCLUDE_DIR = ${NGSPICE_INCLUDE_DIR}")
 message(STATUS "NGSPICE_LIBRARY = ${NGSPICE_LIBRARY}")
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/rc.cir ${CMAKE_CURRENT_BINARY_DIR}/rc.cir COPYONLY)
+
 add_executable (demo_ngspice main.cpp)
 target_link_libraries(demo_ngspice ${NGSPICE_LIBRARY})
 set_property(TARGET demo_ngspice PROPERTY CXX_STANDARD 11)
