@@ -36,11 +36,18 @@ protected:
 
         const auto& blk = msg->block;
 
+        //cout.write(blk.data(), blk.size());
+        //cout << ">" << blk.size() << blk.data() << endl;
+
+        //return nullptr;
+
         byte_queue.insert(byte_queue.end(), blk.begin(), blk.begin() + blk.size());
 
         // try to find header/footer delimiters
         auto head_it = search(byte_queue.begin(), byte_queue.end(), DATA_HEAD.begin(), DATA_HEAD.end());
         auto foot_it = search(byte_queue.begin(), byte_queue.end(), DATA_FOOT.begin(), DATA_FOOT.end());
+
+
 
         // wait until both header and footer are present
         if(head_it == byte_queue.end() || foot_it == byte_queue.end()) {

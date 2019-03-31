@@ -1,4 +1,4 @@
-add_subdirectory(tutorial)
+#add_subdirectory(tutorial)
 add_subdirectory(demo)
 
 set(RELATIVE_CURRENT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
