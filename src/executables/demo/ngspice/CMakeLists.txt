@@ -2,7 +2,11 @@
 #TODO: Also use geda-gaf-1.9.2 source code to get gaf-export for dynamic circuit drawings
 
 # resource files used by binary target are copied in to the binary build folder
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/rc.cir ${CMAKE_CURRENT_BINARY_DIR}/rc.cir COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/rc.cir
+               ${CMAKE_CURRENT_BINARY_DIR}/rc.cir COPYONLY)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/spinit
+               ${CMAKE_CURRENT_BINARY_DIR}/../share/ngspice/scripts/spinit COPYONLY)
 
 
 
@@ -23,7 +27,7 @@ if (NGSPICE_LIBRARY MATCHES "NOTFOUND")
             URL "https://sourceforge.net/projects/ngspice/files/ng-spice-rework/30/ngspice-30.tar.gz/download"
             CONFIGURE_COMMAND ${NGSPICE_ROOT}/src/LocalNgSpice/configure
                                 --with-ngshared
-                                --enable-relpath
+                                --enable-relpath # search for spinit in the ../share/ngspice/scripts
                                 --disable-maintainer-mode
                                 --disable-openmp
                                 --without-wingui
