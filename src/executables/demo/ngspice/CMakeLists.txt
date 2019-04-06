@@ -9,6 +9,9 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/spinit
                ${CMAKE_CURRENT_BINARY_DIR}/../share/ngspice/scripts/spinit COPYONLY)
 
 
+file(GLOB TEST_SRC
+        "*.cpp")
+
 
 # First look for a pre-compiled and installed binary of NgSpice using find_package.
 # However usually this is a special case, therefore if none is found
@@ -48,15 +51,17 @@ if (NGSPICE_LIBRARY MATCHES "NOTFOUND")
     include_directories(${SOURCE_DIR}/src/include/)
 
     # point binaries to the locally compiled NgSpice
-    add_executable (demo_ngspice main.cpp)
+    add_executable (demo_ngspice ${TEST_SRC})
     target_link_libraries(demo_ngspice lib_ngspice_prj)
+    target_link_libraries(demo_ngspice ${CMAKE_THREAD_LIBS_INIT})
     add_dependencies(demo_ngspice lib_ngspice)
     set_property(TARGET demo_ngspice PROPERTY CXX_STANDARD 11)
 
 else()
 
     # point binaries on to the globally installed NgSpice
-    add_executable (demo_ngspice main.cpp)
+    add_executable (demo_ngspice ${TEST_SRC})
+    target_link_libraries(demo_ngspice ${CMAKE_THREAD_LIBS_INIT})
     target_link_libraries(demo_ngspice ${NGSPICE_LIBRARY})
     set_property(TARGET demo_ngspice PROPERTY CXX_STANDARD 11)
 

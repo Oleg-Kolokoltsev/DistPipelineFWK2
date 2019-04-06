@@ -153,7 +153,13 @@ protected:
         tPtrIn curr_in;
         while(1){
             curr_in = pull_msg();
-            if(curr_in->cmd == MSG_CMD::STOP) break;
+            if(curr_in->cmd == MSG_CMD::STOP){
+                break;
+            }else if(curr_in->cmd == MSG_CMD::USER && curr_in->user_data){
+                //TODO: refactor user_data name, it's basic now
+                curr_in->user_data->apply(this);
+            }
+
             if(!process_usr_msg(move(curr_in))){
                 std::cerr << name << " warning: process_usr_msg failed" << std::endl;
             }
