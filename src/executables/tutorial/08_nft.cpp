@@ -59,7 +59,18 @@ void gsl_err_handler (const char * reason,
 // Using an analytic continuous periodic input signal
 struct InpSignal : IContinuousRR{
     InpSignal(){ interval = tInterval(n_inf, p_inf); }
-    double evaluate(double t){ return sin(5*t*2*M_PI/T) + 0.5*sin(2*t*2*M_PI/T); }
+
+
+    double evaluate(double t){
+        double w = abs(t) < 9 ? 1 : 0;
+        double Tw = T*3;
+        double w_blackman_harris = 0.35875 - 0.48829*cos(2*M_PI*t/(Tw)) + 0.14128*cos(4*M_PI*t/(Tw)) - 0.01168*cos(6*M_PI*t/(Tw));
+        double f = cos(7*t*2*M_PI/T) + 0.3*cos(1*t*2*M_PI/T)*cos(7*t*2*M_PI/T);
+
+        return 5*f;//w_blackman_harris
+    }
+
+
     double get_period(){ return T; }
     void set_interval(tInterval ivl){}
 
@@ -85,7 +96,7 @@ private:
 
         for(double w = w_min; w <= w_max; w += dw) {
             try {
-                auto mag = abs(ft.integrate(&inp_signal, 0, T, w));
+                auto mag = abs(ft.integrate(&inp_signal, 0, 3*T, w));
                 xy_data.push_back(make_pair(w, mag));
             } catch (...) {
                 cout << "NumSpectrum: w = " << w << " failed" << endl;
