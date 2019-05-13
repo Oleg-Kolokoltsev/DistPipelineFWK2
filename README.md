@@ -1,1 +1,3 @@
 # DistPipelineFWK2
+
+"DistPipelineFWK" framework is designed for real-time signal processing. The framework was created as an alternative to an existing widely-used package called "LabView" with API-based interface, that, compared to the latter, is optimized for high speed and tasks that involve elevated levels of resource consumption. In this framework each filter lives in its own thread with a possibility to merge threads. The project consists of three parts: 1. Template-based message exchange engine; 2. Set of standard signal processing algorithms; 3. A number of generic signal sources. Compared to LabView, the second benefit is the transparency of interfacing with different signal sources, e.g.: ngspice, MIDI, popular micro-controllers.
