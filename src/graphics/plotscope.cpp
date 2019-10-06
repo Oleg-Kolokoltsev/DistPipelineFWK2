@@ -25,7 +25,9 @@ err_buf(4096), out_buf(4096), stopped{false} {
     cout << "Found gnuplot: " << path.string() << endl;
 
     stringstream ss;
-    ss << "set terminal png size " << Nx << "," << Ny << endl;
+    // allegro supports only png, bmp or pngcairo formats
+    // this code supports png or pngcairo only
+    ss << "set terminal pngcairo size " << Nx << "," << Ny << endl;
     string plt_header = ss.str();
 
     ios = tPtrIOSrv(new tIOSrv,
@@ -137,7 +139,7 @@ PlotScope::handle_read_stdout(const tErrCode& ec, std::size_t bytes_transferred,
         auto& part_png = ps->part_png;
 
         auto prev_sz = part_png.size();
-        //todo: looks like this is an error, you can't insert all into the part_png, there can be non-data messages
+        
         part_png.insert(part_png.end(), ps->out_buf.begin(), ps->out_buf.begin() + bytes_transferred);
 
         auto roll = prev_sz > 8 ? 7 : prev_sz;
@@ -177,9 +179,21 @@ PlotScope::handle_read_stdout(const tErrCode& ec, std::size_t bytes_transferred,
                 ps->curr_png_mtx.lock();
                 ps->curr_png.resize(distance(part_png.begin(), foot_it + 8));
                 ps->curr_png.insert(ps->curr_png.begin(), part_png.begin(), foot_it + 8);
+
+                //todo: remove comments
+                //cout << endl << "CLEAN DATA" << endl;
+                //cout.write(static_cast<char *>((void *) ps->curr_png.data()), 16); //HEAD
+                //cout.write(static_cast<char *>((void *) &(*foot_it)), 8); //FOOT
+                //cout << "size: " << ps->curr_png.size() << endl;
+                //cout << endl << "******END OF FILE" << endl;
+
+                //todo: make CRC check
+                //https://github.com/rvong/png-debugger
+
                 ps->curr_png_mtx.unlock();
 
 
+                //todo: part_png has it's own mutex for ASIO processing?
                 part_png.erase(part_png.begin(), foot_it + 8);
 
                 //using namespace std::chrono;
@@ -188,12 +202,6 @@ PlotScope::handle_read_stdout(const tErrCode& ec, std::size_t bytes_transferred,
             }
         }
 
-        //todo: remove comments
-        //cout << endl << "CLEAN PNG DATA" << endl;
-        //cout.write(static_cast<char *>((void *) ps->curr_png.data()), ps->curr_png.size());
-        //cout << ps->curr_png.size() << endl;
-        //cout << endl << "END OF FILE" << endl;
-        //cout << ps->curr_png.size() << endl;
     }
 
     ps->read_some_wrapper(handle_read_stdout, pipe, ps->out_buf, ps);

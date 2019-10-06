@@ -47,7 +47,7 @@ public:
 		Nx = getNx();
 		Ny = getNy();
 
-		curr_display = al_get_current_display();
+		auto curr_display = al_get_current_display();
 
 		cx = al_get_display_width(curr_display);
 		cy = al_get_display_height(curr_display);
@@ -83,6 +83,7 @@ public:
 
 	void render(){
 		params_guard();
+		auto curr_display = al_get_current_display();
 		if(!mem_bmp || !video_bmp || !curr_display) return;
 		if(update_req){
 			al_draw_bitmap(video_bmp.get(), 0, 0, 0);
@@ -117,7 +118,8 @@ private:
 			if(p_this->update_req){
 				al_set_target_bitmap(p_this->mem_bmp.get());
 				p_this->draw_memory();
-				al_set_target_bitmap(al_get_backbuffer(p_this->curr_display));
+				auto back_buffer = al_get_backbuffer(al_get_current_display() /*p_this->curr_display*/);
+				al_set_target_bitmap(back_buffer);
 				p_this->update_req = false;
 			}else{
 				this_thread::sleep_for(chrono::milliseconds(5));
@@ -126,7 +128,8 @@ private:
 	};
 
 	void params_guard(){
-		if(curr_display != al_get_current_display()) goto reattach;
+		auto curr_display = al_get_current_display();
+		if(!curr_display) goto reattach;
 		if(Nx != getNx() || Ny != getNy()) goto reattach;
 		if(cx != al_get_display_width(curr_display) || cy != al_get_display_height(curr_display)) goto reattach;
 		return;
@@ -139,7 +142,6 @@ private:
 private:
 	tBitmapPtr mem_bmp = nullptr;
 	tBitmapPtr video_bmp = nullptr;
-	ALLEGRO_DISPLAY* curr_display = nullptr;
 
 	int Nx = 1, Ny = 1, cx = 1, cy = 1;
 	double aspect = 1;
