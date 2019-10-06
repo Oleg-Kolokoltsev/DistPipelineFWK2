@@ -21,10 +21,11 @@ NgSpiceSRC::NgSpiceSRC(string cir_file, int slice_data):
     // In the case if a circuit file was specified inside constructor, thread of
     // the current NgSpiceSRC will load that file. In the opposite case a circuit can be
     // loaded in the message loop via user messages.
+    // todo: bg_run has to be executed from the main thread, not here!!!
     if(!cir_file.empty()){
         ngSpice_Init(getchar_cb, getstat_cb, exit_cb, data_cb, initdata_cb, simulation_runs_cb, this);
         ngSpice_Command((char*) cir_file.c_str());
-        ngSpice_Command((char*) "bg_run");
+        //ngSpice_Command((char*) "bg_run");
         is_loaded = true;
     }
 }
@@ -36,6 +37,11 @@ NgSpiceSRC::~NgSpiceSRC(){
     // todo: use mutex here!!!
     ngSpice_Command((char*) "quit");
 }
+
+void
+NgSpiceSRC::simulate(){
+    ngSpice_Command((char*) "bg_run");
+};
 
 // ************ NgSpice CALLBACKS ***********************************
 

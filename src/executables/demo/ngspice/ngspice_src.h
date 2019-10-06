@@ -120,6 +120,10 @@ protected:
 private:
     void send_out_message();
 
+public:
+    // start simulation
+    void simulate();
+
 private:
     /*
      * State variables of the NgSpice simulation process

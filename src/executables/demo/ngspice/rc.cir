@@ -1,12 +1,13 @@
 RC transient process
-* Testing transient modelling with a capacitor
-* The RC time constant is 680ohms * 1 uF = 0.68ms
+* Testing transient modelling with an LC contour
 
-v1 1 0 DC 0 PULSE(0 10 0.0 2NS 2NS 10S 100NS )
-r1 1 2 680ohm
-c1 2 0 1u
+* --------- devices ---------
+C_C1 0 N_2 1u
+R_R2 N_1 N_3 4
+L_L1 N_2 N_1 500u
+V_V1 N_3 0 DC 0V AC 1 PULSE(-1 1 0 0m 0m 1m 2m)
 
-.TRAN 0.5us 2m 0
-.save V(2) @r1[i]
+.TRAN 1e-5 0.500 0 1e-5
+.save V(N_2) V(N_3)
 
 .end
