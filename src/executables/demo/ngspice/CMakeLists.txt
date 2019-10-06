@@ -28,7 +28,7 @@ if (NGSPICE_LIBRARY MATCHES "NOTFOUND")
     ExternalProject_Add(lib_ngspice
             PREFIX "${NGSPICE_ROOT}"
             URL "https://sourceforge.net/projects/ngspice/files/ng-spice-rework/30/ngspice-30.tar.gz/download"
-            CONFIGURE_COMMAND ${NGSPICE_ROOT}/src/LocalNgSpice/configure
+            CONFIGURE_COMMAND ${NGSPICE_ROOT}/src/lib_ngspice/configure
                                 --with-ngshared
                                 --enable-relpath # search for spinit in the ../share/ngspice/scripts
                                 --disable-maintainer-mode
