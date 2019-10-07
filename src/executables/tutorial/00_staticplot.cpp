@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <string>
 #include <sstream>
 #include <cmath>
 
@@ -44,6 +43,8 @@ int main(int argc, char** argv){
     for(double i = 0; i < 100; i++){
         cmd << i/50 << " " << sin(i/20) << endl;
     };
+
+    cout << cmd.str() << endl;
 
     //tail of the terminal command
     cmd << "\" | gnuplot --persist";
