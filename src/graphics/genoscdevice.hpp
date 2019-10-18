@@ -46,7 +46,7 @@ public:
         new_msg = false;
 
         // no move on this packet, becuse of subsequent usage diversity,
-        // this class guarantees that the last frame arrived will not dissapear
+        // this class guarantees that the last frame arrived will be stored
         return last_msg;
     }
 

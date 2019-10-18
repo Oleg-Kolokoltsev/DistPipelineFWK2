@@ -38,7 +38,7 @@ struct BaseMessage {
     }
 
     /*
-     * virtual destructor is needed for dynamic downcast of BaseMessage to it's child type
+     * Virtual destructor is needed for dynamic downcast of BaseMessage to it's child type
      * using dynamic_pointer_cast<DerivedMsg>(ptr), where 'ptr' has shared_pointer<MaseMessage>
      * type that was previously upcasted.
      */
