@@ -17,7 +17,7 @@
 
 //TODO: Set RtMidi error callbacks
 
-#include "midi_port_src.hpp"
+#include "src_midi.hpp"
 
 using namespace std;
 

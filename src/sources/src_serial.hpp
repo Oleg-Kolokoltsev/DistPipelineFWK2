@@ -193,7 +193,8 @@ protected:
     size_t baud_rate;
     tPtrSerialPort port;
 
-    // needed to sync data access from additional asynchronous acquisition thread (asio)
+    // needed to sync data access from additional asynchronous
+    // acquisition thread (asio)
     std::mutex asio_async_mtx;
 
     // plain buffer that is filled with data by asio

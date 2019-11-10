@@ -11,7 +11,7 @@
 #include "pid_filter.hpp"
 #include "messages.h"
 
-#include "serial_port_src.hpp"
+#include "src_serial.hpp"
 
 class PeltierHardwareFilter : public SerialPortSRC<PIDMsgOut /*tIn*/, 1024> {
 

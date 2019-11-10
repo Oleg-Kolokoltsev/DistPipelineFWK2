@@ -7,7 +7,7 @@
 #include <deque>
 #include <cstring>
 
-#include "serial_port_src.hpp"
+#include "src_serial.hpp"
 #include "base_filter.hpp"
 #include "simplescope.h"
 #include "window.hpp"
