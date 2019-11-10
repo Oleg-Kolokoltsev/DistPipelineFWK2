@@ -106,7 +106,7 @@ private:
     unsigned int uid;
 };
 
-// custom tData shell have a copy constructor, so there is no sence to use this
+// custom tData shell have a copy constructor, so there is no sense to use this
 // class with custom data structures, however a lot's of STL classes
 // hav their copy constructors well implemented
 template <typename tData>
