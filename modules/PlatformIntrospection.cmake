@@ -31,14 +31,19 @@ find_package(Threads REQUIRED)
 
 # needed for graphics (graphics)
 find_package(Allegro REQUIRED)
+message(STATUS ALLEGRO_INCLUDE_DIR: ${ALLEGRO_INCLUDE_DIR})
+include_directories(${ALLEGRO_INCLUDE_DIR})
 
 # a lot of math use GSL
 find_package(GSL REQUIRED)
+message(STATUS GSL_INCLUDE_DIR: ${GSL_INCLUDE_DIR})
 include_directories(${GSL_INCLUDE_DIR})
 
 # system and filesystem are needed for file storage
-# Boost thread is for ASIO (see sources)
+# Boost thread is for ASIO (se sources)
 find_package(Boost COMPONENTS system filesystem thread REQUIRED)
+message(STATUS Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIRS})
 
 # NetCDF library with package libnetcdf-c++4-dev in Ubuntu require libnetcdf-c++-legacy-dev for C++ surpport
 #set (NETCDF_CXX "YES")
