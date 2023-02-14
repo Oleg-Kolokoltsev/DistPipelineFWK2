@@ -48,10 +48,10 @@ int main(int argc, char** argv){
     split->add_target(dev_osc_2);
 
     //create windows and renderers (Oscilloscope)
-    Window w1(unique_ptr<SimpleScope>(new SimpleScope(dev_osc_1, 50)));
+    Window w1(unique_ptr<SimpleScope>(new SimpleScope(dev_osc_1, 100)));
     w1.create_window();
 
-    Window w2(unique_ptr<SimpleScope>(new SimpleScope(dev_osc_2, 50)));
+    Window w2(unique_ptr<SimpleScope>(new SimpleScope(dev_osc_2, 100)));
     w2.create_window();
 
     while(1){

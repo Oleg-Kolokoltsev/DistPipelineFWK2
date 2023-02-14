@@ -68,7 +68,7 @@ int main(int argc, char** argv){
     abs_complex->set_target(dev_osc);
 
     //create windows and renderers (Oscilloscope)
-    Window w1(unique_ptr<SimpleScope>(new SimpleScope(dev_osc, 50)));
+    Window w1(unique_ptr<SimpleScope>(new SimpleScope(dev_osc, 100)));
     w1.create_window();
 
     while(1){

@@ -59,9 +59,9 @@ protected:
 
         //TODO: Find IP by known MAC, but test with redpitaya!!!
         //Connect to server
+        std::cout << "connecting to " << ip_str << std::endl;
         s_tcp.connect(ip_str,port);
-
-        std::cout << "connected to " << ip_str << std::endl;
+        std::cout << "connected" << std::endl;
 
         //Configure acquisition mode
 
